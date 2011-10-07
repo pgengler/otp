@@ -1,0 +1,5 @@
+alwaysFilter called? <strong>[% alwaysFilter ? 'Yes' : 'No' %]</strong>
+<br>
+indexOnlyFilter called? <strong>[% indexOnlyFilter ? 'Yes' : 'No' %]</strong>
+<br>
+notIndexFilter called? <strong>[% notIndexFilter ? 'Yes' : 'No' %]</strong>

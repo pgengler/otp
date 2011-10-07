@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Variable-setting controller</title>
+  </head>
+  <body>
+    The number is: [% value %]
+  </body>
+</html>

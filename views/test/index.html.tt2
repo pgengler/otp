@@ -1,0 +1,16 @@
+<h1>TestController</h1>
+<ul>
+  <li>[% link_to('test/index') %]</li>
+</ul>
+
+<h1>VarController</h1>
+<ul>
+  <li>[% link_to('var/index') %]</li>
+  <li>[% link_to('var/number/42', '42') %]</li>
+</ul>
+
+<h1>FilterController</h1>
+<ul>
+  <li>[% link_to('filter/index') %]</li>
+  <li>[% link_to('filter/other') %]</li>
+</ul>
