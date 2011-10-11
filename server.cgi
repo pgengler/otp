@@ -17,7 +17,7 @@ use constant {
 
 ##############
 
-my $logger = new Logger('server', DEBUG);
+my $logger = new Logger('server', INFO);
 
 my $pathInfo = getPathInfo();
 $logger->debug("Path info is '%s'", join('|', @$pathInfo));
