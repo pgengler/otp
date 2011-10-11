@@ -2,7 +2,8 @@ package FilterController;
 
 use strict;
 
-use base 'ApplicationController';
+use ApplicationController;
+use parent 'ApplicationController';
 
 beforeFilter \&alwaysFilter;
 beforeFilter \&indexOnlyFilter, 'only' => [ 'index' ];
