@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>[% title || 'MVC test' %]</title>
+    <title>[% title || 'OTP test' %]</title>
   </head>
   <body>
     [% content %]
