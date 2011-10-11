@@ -2,7 +2,7 @@ package VarController;
 
 use strict;
 
-use base 'Controller';
+use parent 'ApplicationController';
 
 sub index()
 {
