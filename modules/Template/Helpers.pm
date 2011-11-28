@@ -13,7 +13,7 @@ sub link_to()
   my ($path, $text) = @_;
   $text ||= $path;
 
-  my $fullURL = '/otp/server.cgi/' . $path;
+  my $fullURL = '/~pgengler/otp/server.cgi/' . $path;
 
   return sprintf('<a href="%s">%s</a>', $fullURL, $text);
 }
