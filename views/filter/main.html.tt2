@@ -1,5 +1,5 @@
-alwaysFilter called? <strong>[% alwaysFilter ? 'Yes' : 'No' %]</strong>
+always_filter called? <strong>[% always_filter ? 'Yes' : 'No' %]</strong>
 <br>
-indexOnlyFilter called? <strong>[% indexOnlyFilter ? 'Yes' : 'No' %]</strong>
+index_only_filter called? <strong>[% index_only_filter ? 'Yes' : 'No' %]</strong>
 <br>
-notIndexFilter called? <strong>[% notIndexFilter ? 'Yes' : 'No' %]</strong>
+not_index_filter called? <strong>[% not_index_filter ? 'Yes' : 'No' %]</strong>

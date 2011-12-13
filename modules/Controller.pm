@@ -10,10 +10,10 @@ use Util qw/ :all /;
 use base 'Exporter';
 
 our @EXPORT = qw/
-  beforeFilter prependBeforeFilter
+  before_filter prepend_before_filter
 /;
 
-our $_beforeFilters = { };
+our $_before_filters = { };
 
 sub new()
 {
@@ -66,7 +66,7 @@ sub render()
 
   my $vars = shift;
 
-  $self->_renderHTML($action, $vars);
+  $self->_render_html($action, $vars);
 
   $self->{'_rendered'} = 1;
 }
@@ -78,7 +78,7 @@ sub rendered()
   return $self->{'_rendered'};
 }
 
-sub _renderHTML()
+sub _render_html()
 {
   my $self = shift;
   my ($action, $vars) = @_;
@@ -92,66 +92,63 @@ sub _renderHTML()
   print $template->process($vars);
 }
 
-sub beforeFilter($;%)
+sub before_filter($;%)
 {
-  my $filterSub = shift;
-  my %options = @_;
+	my ($filter_sub, %options) = @_;
 
   my @caller = caller();
-  my $controllerName = controllerNameFromPackage($caller[0]);
+  my $controller_name = controller_name_from_package($caller[0]);
 
-  my $filterInfo = _filterInfo($filterSub, %options);
+  my $filter_info = _filter_info($filter_sub, %options);
 
-  if (not exists $_beforeFilters->{ $controllerName }) {
-    $_beforeFilters->{ $controllerName } = [ ];
+  if (not exists $_before_filters->{ $controller_name }) {
+    $_before_filters->{ $controller_name } = [ ];
   }
 
-  push @{ $_beforeFilters->{ $controllerName } }, $filterInfo;
+  push @{ $_before_filters->{ $controller_name } }, $filter_info;
 }
 
-sub prependBeforeFilter()
+sub prepend_before_filter()
 {
-  my $filterSub = shift;
-  my %options = @_;
+	my ($filter_sub, %options) = @_;
 
   my @caller = caller();
-  my $controllerName = controllerNameFromPackage($caller[0]);
+  my $controller_name = controller_name_from_package($caller[0]);
 
-  my $filterInfo = _filterInfo($filterSub, %options);
+  my $filter_info = _filter_info($filter_sub, %options);
 
-  if (not exists $_beforeFilters->{ $controllerName }) {
-    $_beforeFilters->{ $controllerName } = [ ];
+  if (not exists $_before_filters->{ $controller_name }) {
+    $_before_filters->{ $controller_name } = [ ];
   }
 
-  unshift @{ $_beforeFilters->{ $controllerName } }, $filterInfo;
+  unshift @{ $_before_filters->{ $controller_name } }, $filter_info;
 }
 
-sub _filterInfo($;%)
+sub _filter_info($;%)
 {
-  my $filterSub = shift;
-  my %options = @_;
+	my ($filter_sub, %options) = @_;
 
-  my $filterInfo = {
-    'sub' => $filterSub,
+  my $filter_info = {
+    'sub' => $filter_sub,
   };
 
   # 'only' takes precendece over 'except' if both are specified
   if ($options{'only'} && ref($options{'only'}) eq 'ARRAY') {
-    $filterInfo->{'only'} = $options{'only'};
+    $filter_info->{'only'} = $options{'only'};
   } elsif ($options{'except'} && ref($options{'except'}) eq 'ARRAY') {
-    $filterInfo->{'except'} = $options{'except'};
+    $filter_info->{'except'} = $options{'except'};
   }
 
-  return $filterInfo;
+  return $filter_info;
 }
 
 
-sub _runFilters()
+sub _run_filters()
 {
   my $self = shift;
   my ($action) = @_;
 
-  my $filters = $_beforeFilters->{ controllerNameFromPackage(ref($self)) } || [ ];
+  my $filters = $_before_filters->{ controller_name_from_package(ref($self)) } || [ ];
 
   foreach my $filter (@$filters) {
     if (exists $filter->{'only'} && contains($action, $filter->{'only'})) {

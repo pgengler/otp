@@ -20,11 +20,11 @@ our %EXPORT_TAGS = (
   'levels' => [ qw/ FATAL ERROR WARN INFO DEBUG / ],
 );
 
-my $_displayLabels = { };
-foreach my $levelName (@{ $EXPORT_TAGS{'levels'} }) {
+my $_display_labels = { };
+foreach my $level_name (@{ $EXPORT_TAGS{'levels'} }) {
   no strict 'refs';
-  my $level = $levelName->();
-  $_displayLabels->{ $level } = $levelName;
+  my $level = $level_name->();
+  $_display_labels->{ $level } = $level_name;
 }
 
 our $_instances = { };
@@ -93,7 +93,7 @@ sub _log()
 
     local $| = 1;
 
-    printf '[%s] %s:%d: %s: ', scalar localtime, $caller[1], $caller[2], $_displayLabels->{ $level };
+    printf '[%s] %s:%d: %s: ', scalar localtime, $caller[1], $caller[2], $_display_labels->{ $level };
     printf STDERR $format, @parameters;
     print STDERR "\n";
   }

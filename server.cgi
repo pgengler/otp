@@ -19,27 +19,27 @@ use constant {
 
 my $logger = new Logger('server', INFO);
 
-my $pathInfo = getPathInfo();
-$logger->debug("Path info is '%s'", join('|', @$pathInfo));
+my $path_info = get_path_info();
+$logger->debug("Path info is '%s'", join('|', @$path_info));
 
-my $controllerName = findController($pathInfo);
-$logger->debug("Controller name is '%s'", $controllerName);
+my $controller_name = find_controller($path_info);
+$logger->debug("Controller name is '%s'", $controller_name);
 
-my $methodName = findMethod($pathInfo);
-$logger->debug("Method name is '%s'", $methodName);
+my $method_name = find_method($path_info);
+$logger->debug("Method name is '%s'", $method_name);
 
-my @parameters = splice(@$pathInfo, 2);
+my @parameters = splice(@$path_info, 2);
 
-execute($controllerName, $methodName, @parameters);
+execute($controller_name, $method_name, @parameters);
 
 ##############
 
 sub execute()
 {
-  my ($controllerName, $methodName, @arguments) = @_;
+  my ($controller_name, $method_name, @arguments) = @_;
 
-  my $controllerBaseName = lc($controllerName);
-  $controllerBaseName =~ s/controller$//;
+  my $controller_base_name = lc($controller_name);
+  $controller_base_name =~ s/controller$//;
 
   my $controller;
   my $vars;
@@ -49,17 +49,17 @@ sub execute()
     local @INC = @INC;
     push @INC, cwd.'/controllers/';
 
-    require $controllerName.'.pm';
+    require $controller_name.'.pm';
 
     # Instantiate controller
-    $controller = new $controllerName;
+    $controller = new $controller_name;
 
     # Run filters
-    $controller->_runFilters($methodName);
+    $controller->_run_filters($method_name);
 
     # Call action
     unless ($controller->rendered()) {
-      $vars = $controller->$methodName(@arguments);
+      $vars = $controller->$method_name(@arguments);
     }
   };
   if ($@) {
@@ -71,41 +71,41 @@ sub execute()
 
   unless ($controller->rendered()) {
     # Load template with same name as controller/action
-    my $template = new Template::HTML($controllerBaseName . '/' . $methodName . '.html.tt2');
+    my $template = new Template::HTML($controller_base_name . '/' . $method_name . '.html.tt2');
     print header({ 'charset' => 'utf-8' });
     print $template->process($vars);
   }
 }
 
-sub getPathInfo()
+sub get_path_info()
 {
   if ($ENV{'PATH_INFO'}) {
-    my @pathComponents = split(/\//, $ENV{'PATH_INFO'});
-    shift @pathComponents;
-    return [ @pathComponents ];
+    my @path_components = split(/\//, $ENV{'PATH_INFO'});
+    shift @path_components;
+    return [ @path_components ];
   }
   return [ ];
 }
 
 # for now, just do the simple thing and treat the first component of the path info as the controller name
-sub findController($)
+sub find_controller($)
 {
-  my ($pathInfo) = @_;
+  my ($path_info) = @_;
 
-  if (scalar @$pathInfo > 0) {
-    return ucfirst($pathInfo->[0]).'Controller';
+  if (scalar @$path_info > 0) {
+    return ucfirst($path_info->[0]).'Controller';
   }
 
   return DEFAULT_CONTROLLER;
 }
 
 # for now, just do the simple thing and treat the second component of the path info as the method name
-sub findMethod($)
+sub find_method($)
 {
-  my ($pathInfo) = @_;
+  my ($path_info) = @_;
 
-  if (scalar @$pathInfo > 1) {
-    return $pathInfo->[1];
+  if (scalar @$path_info > 1) {
+    return $path_info->[1];
   }
 
   return DEFAULT_ACTION;

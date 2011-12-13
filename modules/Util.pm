@@ -8,13 +8,13 @@ use base 'Exporter';
 
 our @EXPORT_OK = qw/
   contains
-  controllerNameFromPackage
+  controller_name_from_package
 /;
 our %EXPORT_TAGS = (
   'all' => [ @EXPORT_OK ],
 );
 
-sub controllerNameFromPackage($)
+sub controller_name_from_package($)
 {
   my ($package) = @_;
 

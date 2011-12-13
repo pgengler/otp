@@ -5,9 +5,9 @@ use strict;
 use ApplicationController;
 use parent 'ApplicationController';
 
-beforeFilter \&alwaysFilter;
-beforeFilter \&indexOnlyFilter, 'only' => [ 'index' ];
-beforeFilter \&notIndexFilter, 'except' => [ 'index' ];
+before_filter \&always_filter;
+before_filter \&index_only_filter, 'only' => [ 'index' ];
+before_filter \&not_index_filter, 'except' => [ 'index' ];
 
 sub index()
 {
@@ -16,9 +16,9 @@ sub index()
   $self->render('main', {
     'title'           => 'FilterController::index',
 
-    'alwaysFilter'    => $self->{'_alwaysFilter'},
-    'indexOnlyFilter' => $self->{'_indexOnlyFilter'},
-    'notIndexFilter'  => $self->{'_notIndexFilter'},
+    'always_filter'     => $self->{'_always_filter'},
+    'index_only_filter' => $self->{'_index_only_filter'},
+    'not_index_filter'  => $self->{'_not_index_filter'},
   });
 }
 
@@ -27,32 +27,32 @@ sub other()
   my $self = shift;
 
   $self->render('main', {
-    'title'           => 'FilterController::other',
-    'alwaysFilter'    => $self->{'_alwaysFilter'},
-    'indexOnlyFilter' => $self->{'_indexOnlyFilter'},
-    'notIndexFilter'  => $self->{'_notIndexFilter'},
+    'title'             => 'FilterController::other',
+    'always_filter'     => $self->{'_always_filter'},
+    'index_only_filter' => $self->{'_index_only_filter'},
+    'not_index_filter'  => $self->{'_not_index_filter'},
   });
 }
 
-sub alwaysFilter()
+sub always_filter()
 {
   my $self = shift;
 
-  $self->{'_alwaysFilter'} = 1;
+  $self->{'_always_filter'} = 1;
 }
 
-sub indexOnlyFilter()
+sub index_only_filter()
 {
   my $self = shift;
 
-  $self->{'_indexOnlyFilter'} = 1;
+  $self->{'_index_only_filter'} = 1;
 }
 
-sub notIndexFilter()
+sub not_index_filter()
 {
   my $self = shift;
 
-  $self->{'_notIndexFilter'} = 1;
+  $self->{'_not_index_filter'} = 1;
 }
 
 1;
