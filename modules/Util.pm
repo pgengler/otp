@@ -9,9 +9,13 @@ use base 'Exporter';
 our @EXPORT_OK = qw/
   contains
   controller_name_from_package
+	underscore
 /;
 our %EXPORT_TAGS = (
   'all' => [ @EXPORT_OK ],
+
+	'array'  => [ qw/ contains / ],
+	'string' => [ qw/ underscore / ],
 );
 
 sub controller_name_from_package($)
@@ -31,5 +35,26 @@ sub contains($$)
 
   return $index != -1;
 }  
+
+#####################
+## STRING FUNCTIONS
+##
+## (Shamelessly ported from Ruby on Rails' ActiveSupport functions
+## of the same names.)
+#####################
+
+sub underscore($)
+{
+	my ($camel_case_word) = @_;
+
+	my $word = $camel_case_word;
+	$word =~ s[::][/]g;
+	$word =~ s/([A-Z\d]+)([A-Z][a-z])/$1_$2/g;
+	$word =~ s/([a-z\d])([A-Z])/$1_$2/g;
+
+	$word =~ tr/-/_/;
+
+	return lc($word);
+}
 
 1;
