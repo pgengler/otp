@@ -86,17 +86,18 @@ sub _add_getter_setter()
 
 	my $class = ref($self);
 
-	eval qq(
-		\*$class::$name = sub {
-			my \$self = shift;
+	{
+		no strict 'refs';
+		*{"$class\::$name"} = sub {
+			my $self = shift;
 
-			if (scalar(\@_) > 0) {
-				\$self->{'_data'}->{ \$name } = shift;
+			if (scalar(@_) > 0) {
+				$self->{'_data'}->{ $name } = shift;
 			}
 
-			return \$self->{'_data'}->{ \$name };
+			return $self->{'_data'}->{ $name };
 		};
-	);
+	}
 }
 
 1;
