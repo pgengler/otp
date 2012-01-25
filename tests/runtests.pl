@@ -5,7 +5,7 @@
 #######
 use strict;
 use warnings;
-use lib ('../modules');
+use lib ('../lib');
 
 #######
 ## INCLUDES

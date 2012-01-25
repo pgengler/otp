@@ -5,7 +5,7 @@ use strict;
 use CGI qw/ :standard /;
 use Cwd;
 
-use lib (cwd.'/modules/');
+use lib (cwd.'/lib');
 
 use Logger qw/ :levels /;
 use Template::HTML;
