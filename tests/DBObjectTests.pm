@@ -15,7 +15,7 @@ sub set_up()
 	$self->{'_object'} = new SampleDBObject();
 }
 
-test "_field_names method adds method", sub {
+test "_field_names function adds method", sub {
 	my $self = shift;
 
 	my $object = $self->{'_object'};
@@ -33,5 +33,22 @@ test "added method saves and returns values", sub {
 	$object->field($val);
 	$self->assert_equals($val, $object->field());
 };
+
+test "constructor called with fields sets values", sub {
+	my $self = shift;
+
+	my $val = 7;
+
+	my $object = new SampleDBObject('field' => $val);
+	$self->assert_equals($val, $object->field);
+};
+
+#test "'find_by_id' returns undef when no record exists", sub {
+#	my $self = shift;
+#
+#	my $record = SampleDBObject->find_by_id(-1);
+#
+#	$self->assert_null($record);
+#};
 
 1;

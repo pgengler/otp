@@ -4,17 +4,9 @@ use strict;
 
 use lib ('../lib');
 
+use DBObject;
 use parent 'DBObject';
 
-sub new()
-{
-	my $class = shift;
-
-	my $self = $class->SUPER::new(@_);
-
-	$self->_field_names([ 'field' ]);
-
-	return bless $self, $class;
-}
+_field_names([ 'field' ]);
 
 1;
