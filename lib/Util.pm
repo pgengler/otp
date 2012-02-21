@@ -1,21 +1,26 @@
 package Util;
 
 use strict;
+use lib ('lib');
 
+use Lingua::EN::Inflect qw/ ORD PL /;
 use List::MoreUtils qw/ first_index /;
 
 use base 'Exporter';
 
 our @EXPORT_OK = qw/
-  contains
-  controller_name_from_package
+	contains
+	controller_name_from_package
+	ordinalize
+	pluralize
+	tableize
 	underscore
 /;
 our %EXPORT_TAGS = (
-  'all' => [ @EXPORT_OK ],
+	'all' => [ @EXPORT_OK ],
 
 	'array'  => [ qw/ contains / ],
-	'string' => [ qw/ underscore / ],
+	'string' => [ qw/ ordinalize pluralize tableize underscore / ],
 );
 
 sub controller_name_from_package($)
@@ -39,9 +44,30 @@ sub contains($$)
 #####################
 ## STRING FUNCTIONS
 ##
-## (Shamelessly ported from Ruby on Rails' ActiveSupport functions
-## of the same names.)
+## Some of these (underscore, for example) are shamlessly ported
+## from Ruby on Rails' ActiveSupprot functions of the same names.
 #####################
+
+sub ordinalize($)
+{
+	my ($number) = @_;
+
+	return ORD($number);
+}
+
+sub pluralize($)
+{
+	my ($word) = @_;
+
+	return PL($word);
+}
+
+sub tableize($)
+{
+	my ($class_name) = @_;
+
+	return pluralize(underscore($class_name));
+}
 
 sub underscore($)
 {
